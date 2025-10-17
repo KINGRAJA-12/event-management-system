@@ -11,6 +11,11 @@ const Navbar = () => {
   let handleLogout=async()=>{
     await logout();
   }
+  let handleClick=()=>{
+    if(!localStorage.getItem("accessToken")&& !localStorage.getItem("refreshToken")){
+      loginModelVis();
+    }
+  }
   return (
     <nav className="w-full h-20 bg-white shadow-lg flex items-center justify-between px-8">
       <Link to="/" className="flex items-center space-x-3">
@@ -24,6 +29,7 @@ const Navbar = () => {
       </Link>
       <div className="flex items-center space-x-6 text-gray-700">
         <Link
+        onClick={handleClick}
           to="/events"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
           <BsBuildingAdd size={20} />
