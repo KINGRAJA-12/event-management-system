@@ -11,16 +11,28 @@ from datetime import date
 import csv
 resend.api_key =settings.RESEND_API_KEY
 #mail sending using "resend"
-def sendMail(from_email, to_email, subject, image_url, number):
+def sendMail(from_email, to_email, subject, image_url,event_name,location,price,date,number):
     try:
         params: resend.Emails.SendParams= {
             "from":"Acme <onboarding@resend.dev>",
             "to": [to_email],
             "subject": subject,
             "html": f"""
-                <h1>Registration Successfull</h1>
-                <p>Your number is: {number}</p>
-                <img src="{image_url}" alt="Event Image"/>
+                <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; background-color: #f9f9f9;">
+                    <h1 style="text-align: center; color: #2e6da4;"> Your Event Ticket </h1>
+                    <img src="{image_url}" alt="Event Image" style="width:100%; height:auto; border-radius: 10px; margin-bottom: 20px;"/>
+                    
+                    <h2 style="color: #333;">{event_name}</h2>
+                    <p><strong>Date:</strong> {date}</p>
+                    <p><strong>Location:</strong> {location}</p>
+                    <p><strong>Price:</strong> ₹{price}</p>
+                    <p><strong>Ticket Number:</strong> {number}</p>
+
+                    <div style="text-align:center; margin-top: 30px;">
+                        <p style="font-size: 14px; color: #555;">Please present this ticket at the entrance.</p>
+                        <p style="font-size: 12px; color: #999;">Thank you for registering!</p>
+                    </div>
+                </div>
             """
         }
         response = resend.Emails.send(params)
@@ -134,6 +146,10 @@ class RegisterEventClass(views.APIView):
                     to_email=attendance.email,
                     subject=f"{attendance.event.title} registered successfully",
                     image_url=attendance.event.image,
+                    event_name=attendance.event.title,
+                    location=attendance.event.location,
+                    price=attendance.event.price,
+                    date=attendance.event.date,
                     number=attendance.att_id
                 )
                 return Response(

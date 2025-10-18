@@ -149,7 +149,7 @@ export const useEvent = create((set, get) => ({
         }))
         toast.success("register succusfully! check your email");
     }catch(err){
-        toast.error("registeration failed");
+        toast.error("already register with email and umber");
         console.log(err?.response?.data?.message|| err?.response?.data?.error ||err?.message||"register event is failed");
     }finally{
         set({isRegisterToEvent:false})
