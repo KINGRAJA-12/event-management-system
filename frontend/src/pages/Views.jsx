@@ -97,13 +97,31 @@ const Views = () => {
             disabled={isRegisterToEvent}
           />
           <button
-            type="button"
-            disabled={isRegisterToEvent || !name || !email || !number ||number.length !== 10}
-            onClick={handleRegister}
-            className="mt-4 flex justify-center items-center bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer"
-          >
-            {isRegisterToEvent ? <ClipLoader size={20} color="white"/> : "Register"}
-          </button>
+  type="button"
+  disabled={
+    isRegisterToEvent ||
+    !name ||
+    !email ||
+    !number ||
+    number.length !== 10 ||
+    singlEvent.capacity - registerUser.length === 0 ||
+    (singlEvent && new Date(singlEvent.date) < new Date())
+  }
+  onClick={handleRegister}
+  className="mt-4 flex justify-center items-center bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer"
+>
+  {isRegisterToEvent
+    ? <ClipLoader size={20} color="white" />
+    : singlEvent.capacity - registerUser.length === 0
+      ? "Sold Out"
+      : (singlEvent && new Date(singlEvent.date) < new Date())
+        ? "Event Passed"
+        : !name || !email || !number || number.length !== 10
+          ? "Fill All Fields"
+          : "Register"
+  }
+</button>
+
         </div>
       </div>
     </div>
